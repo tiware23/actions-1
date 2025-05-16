@@ -1,0 +1,24 @@
+# .github/workflows/promote-cert.yml
+name: Promote to CERT
+
+on:
+  workflow_dispatch:
+    inputs:
+      commit_sha:
+        description: 'Commit SHA to promote'
+        required: true
+
+jobs:
+  promote:
+    runs-on: ubuntu-latest
+    environment:
+      name: cert
+      # This triggers manual approval if configured in the environment settings
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.inputs.commit_sha }}
+
+      - name: Deploy to CERT
+        run: echo "Promoting commit ${{ github.event.inputs.commit_sha }} to CERT..."
